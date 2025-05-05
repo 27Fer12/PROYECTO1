@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alumnos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Lista de Alumnos</h2>
+        <table id="alumnosTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Número de Control</th>
+                    <th>Dirección</th>
+                    <th>Carrera</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchAlumnos() {
+            try {
+                const response = await fetch("/bienvenidos/traer_alumnos");
+                const alumnos = await response.json();
+
+                const tableBody = document.querySelector("#alumnosTable tbody");
+                tableBody.innerHTML = ""; 
+
+                alumnos.forEach(alumno => {
+                    const row = `<tr>
+                        <td>${alumno.id}</td>
+                        <td>${alumno.nombre}</td>
+                        <td>${alumno.apellidoP}</td>
+                        <td>${alumno.apellidoM}</td>
+                        <td>${alumno.numc}</td>
+                        <td>${alumno.direccion}</td>
+                        <td>${alumno.carrera}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        }
+
+        
+        setInterval(fetchAlumnos, 5000);
+        fetchAlumnos();
+    </script>
+</body>
+</html>
